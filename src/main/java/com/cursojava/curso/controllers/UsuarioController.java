@@ -3,9 +3,7 @@ package com.cursojava.curso.controllers;
 import com.cursojava.curso.dao.UsuarioDao;
 import com.cursojava.curso.models.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,7 +11,7 @@ import java.util.List;
 public class UsuarioController {
     @Autowired
     private UsuarioDao usuarioDao;
-    @RequestMapping(value = "api/usuario/{id}")
+    @RequestMapping(value = "api/usuarios/{id}", method = RequestMethod.GET)
     public Usuario getUsuario(@PathVariable long id) {
         Usuario usuario = new Usuario();
         usuario.setId(id);
@@ -23,11 +21,27 @@ public class UsuarioController {
         usuario.setTelefono("3164256707");
         return usuario;
     }
-    @RequestMapping(value = "api/usuarios")
+    @RequestMapping(value = "api/usuarios", method = RequestMethod.GET)
     public List<Usuario> getUsuarios() {
         return usuarioDao.getUsuarios();
     }
+    @RequestMapping(value = "api/usuarios", method = RequestMethod.POST)
+    public void registrarUsuario(@RequestBody Usuario usuario) {
+        usuarioDao.registrar(usuario);
+    }
     @RequestMapping(value = "usuario789")
+    public Usuario editar() {
+        Usuario usuario = new Usuario();
+        usuario.setNombre("Andres");
+        usuario.setApellido("Higuita");
+        usuario.setEmail("andreshiguitaamg@gmail.com");
+        usuario.setTelefono("3164256707") ;
+        return usuario;
+    }
+    @RequestMapping(value = "api/usuarios/{id}", method = RequestMethod.DELETE)
+    public void eliminar(@PathVariable Long id) {
+        usuarioDao.eliminar(id);
+    }
     public Usuario buscar() {
         Usuario usuario = new Usuario();
         usuario.setNombre("Andres");
